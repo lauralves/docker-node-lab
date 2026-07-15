@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Docker Practice</title>
+</head>
+
+<body>
+
+    <h1>Frontend</h1>
+
+    <button onclick="getWelcome()">
+        Call Backend
+    </button>
+
+    <h2 id="message"></h2>
+
+    <script>
+        async function getWelcome() {
+
+            const response = await fetch("http://localhost:3000/welcome");
+
+            const data = await response.json();
+
+            document.getElementById("message").innerText = data.message;
+        }
+    </script>
+
+</body>
+
+</html>
