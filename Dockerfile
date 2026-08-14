@@ -1,6 +1,6 @@
 FROM nginx:latest
 
-COPY index.html .
-COPY /assets /assets
+COPY index.html /usr/share/nginx/html/index.html
+COPY /assets /usr/share/nginx/html/assets
 
 EXPOSE 80
