@@ -1,16 +1,382 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to my Nginx</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meow Ops 🐱‍💻</title>
+    <style>
+        :root {
+            --bg: #1e1e2e;
+            --panel: #181825;
+            --text: #cdd6f4;
+            --muted: #7f849c;
+            --pink: #f5c2e7;
+            --green: #a6e3a1;
+            --yellow: #f9e2af;
+            --blue: #89b4fa;
+            --red: #f38ba8;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Fira Code", "JetBrains Mono", Consolas, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px 16px;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin: 0 0 4px;
+            text-align: center;
+        }
+
+        h1 .accent {
+            color: var(--pink);
+        }
+
+        .subtitle {
+            color: var(--muted);
+            margin: 0 0 28px;
+            text-align: center;
+        }
+
+        .hero {
+            position: relative;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .hero img {
+            width: 100%;
+            border-radius: 16px;
+            border: 3px solid var(--pink);
+            box-shadow: 0 10px 40px rgba(245, 194, 231, 0.25);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .hero img:hover {
+            transform: rotate(-2deg) scale(1.03);
+        }
+
+        .badge {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: var(--green);
+            color: var(--panel);
+            font-weight: bold;
+            font-size: 0.8rem;
+            padding: 6px 10px;
+            border-radius: 999px;
+            transform: rotate(8deg);
+        }
+
+        .terminal {
+            margin-top: 32px;
+            max-width: 640px;
+            width: 100%;
+            background: var(--panel);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .terminal-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: #11111b;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-bar span:last-child {
+            margin-left: auto;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        .terminal-body {
+            padding: 16px;
+            min-height: 220px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .prompt {
+            color: var(--green);
+        }
+
+        .ok {
+            color: var(--green);
+        }
+
+        .warn {
+            color: var(--yellow);
+        }
+
+        .err {
+            color: var(--red);
+        }
+
+        .info {
+            color: var(--blue);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            background: var(--text);
+            animation: blink 1s steps(1) infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            max-width: 640px;
+            width: 100%;
+            margin-top: 32px;
+        }
+
+        .card {
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 4px solid var(--pink);
+        }
+
+        .card h3 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .quote {
+            margin-top: 32px;
+            max-width: 640px;
+            width: 100%;
+            text-align: center;
+            font-style: italic;
+            color: var(--yellow);
+            min-height: 3em;
+            transition: opacity 0.4s;
+        }
+
+        .actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        button {
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: var(--pink);
+            color: var(--panel);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.15s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: var(--blue);
+        }
+
+        .counter {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .paw {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.6rem;
+            animation: floatUp 1.2s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            to {
+                transform: translateY(-80px) scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        footer {
+            margin-top: 40px;
+            color: var(--muted);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
 
-    <img src="/assets/image.png" alt="cute cats">
-    <h2>Hellooooo there!</h2>
+    <h1>Hellooooo there! <span class="accent">=^.^=</span></h1>
+    <p class="subtitle">Bem-vindo ao <strong>Meow Ops</strong>, onde gatinhos fazem deploy em produção na sexta-feira.</p>
 
+    <div class="hero">
+        <span class="badge">200 MEOW</span>
+        <img id="cat" src="/assets/image.png" alt="Gatinhos fofos trabalhando como devs">
+    </div>
+
+    <div class="terminal">
+        <div class="terminal-bar">
+            <span class="dot" style="background:#f38ba8"></span>
+            <span class="dot" style="background:#f9e2af"></span>
+            <span class="dot" style="background:#a6e3a1"></span>
+            <span>whiskers@nginx:~/meow-ops</span>
+        </div>
+        <div class="terminal-body" id="terminal"></div>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <h3>🐈 Sr. Bigodes</h3>
+            <p>Tech Lead. Derruba o café em cima do teclado e chama de "refactor".</p>
+        </div>
+        <div class="card" style="border-color: var(--green)">
+            <h3>🐈‍⬛ Luna</h3>
+            <p>SRE. Dorme 18h por dia, mas acorda em 2ms quando o alerta toca.</p>
+        </div>
+        <div class="card" style="border-color: var(--blue)">
+            <h3>😼 Pirulito</h3>
+            <p>QA. Anda no teclado e encontra bugs que nenhum humano encontraria.</p>
+        </div>
+    </div>
+
+    <p class="quote" id="quote"></p>
+
+    <div class="actions">
+        <button id="pet">🐾 Fazer carinho</button>
+        <button class="secondary" id="nextQuote">💬 Outra sabedoria felina</button>
+    </div>
+    <p class="counter" id="counter">Carinhos recebidos: 0</p>
+
+    <footer>
+        Servido com 💖 por um container Nginx · nenhum novelo foi ferido neste deploy
+    </footer>
+
+    <script>
+        const lines = [
+            { text: "$ docker build -t meow-ops .", cls: "prompt" },
+            { text: "[+] Building 0.9s — lambendo as patinhas... feito", cls: "info" },
+            { text: "$ docker run -p 8080:80 meow-ops", cls: "prompt" },
+            { text: "✔ Container subiu (caiu de pé, como sempre)", cls: "ok" },
+            { text: "⚠ WARN: gato sentado no teclado detectado", cls: "warn" },
+            { text: "✖ ERROR: novelo.js:42 — Uncaught YarnException", cls: "err" },
+            { text: "$ git commit -m \"fix: miau\"", cls: "prompt" },
+            { text: "✔ Deploy concluído. Hora da soneca 😴", cls: "ok" },
+        ];
+
+        const term = document.getElementById("terminal");
+        const cursor = document.createElement("span");
+        cursor.className = "cursor";
+        cursor.innerHTML = "&nbsp;";
+
+        async function typeLines() {
+            for (const line of lines) {
+                const el = document.createElement("div");
+                el.className = line.cls;
+                term.appendChild(el);
+                el.appendChild(cursor);
+                for (const ch of line.text) {
+                    cursor.before(ch);
+                    await new Promise(r => setTimeout(r, line.cls === "prompt" ? 45 : 12));
+                }
+                await new Promise(r => setTimeout(r, 350));
+            }
+        }
+        typeLines();
+
+        const quotes = [
+            "\"Funciona na minha caixinha de areia.\" — Sr. Bigodes",
+            "\"Não é bug, é um comportamento felino não documentado.\" — Luna",
+            "\"Já tentou desligar e ligar de novo? Eu derrubo da mesa pra você.\" — Pirulito",
+            "\"Tenho 7 vidas, por isso faço deploy sem testes.\" — Gato anônimo",
+            "\"rm -rf /sofá\" — todo gato, todo dia",
+            "\"Code review? Eu só sento em cima do PR até alguém aprovar.\" — Luna",
+            "\"Meu stack: atum, soneca e TypeScript.\" — Sr. Bigodes",
+        ];
+        const quoteEl = document.getElementById("quote");
+        let qi = Math.floor(Math.random() * quotes.length);
+
+        function showQuote() {
+            quoteEl.style.opacity = 0;
+            setTimeout(() => {
+                qi = (qi + 1) % quotes.length;
+                quoteEl.textContent = quotes[qi];
+                quoteEl.style.opacity = 1;
+            }, 300);
+        }
+        showQuote();
+        setInterval(showQuote, 6000);
+        document.getElementById("nextQuote").addEventListener("click", showQuote);
+
+        let pets = 0;
+        const counter = document.getElementById("counter");
+        const reactions = ["prrrr 😺", "miau! 😸", "mais! 😻", "ok chega 😾", "prrrrrrrr 😽"];
+
+        function spawnPaw(x, y) {
+            const paw = document.createElement("span");
+            paw.className = "paw";
+            paw.textContent = ["🐾", "💖", "🐟", "🧶"][Math.floor(Math.random() * 4)];
+            paw.style.left = x + "px";
+            paw.style.top = y + "px";
+            document.body.appendChild(paw);
+            setTimeout(() => paw.remove(), 1200);
+        }
+
+        function pet(e) {
+            pets++;
+            counter.textContent = `Carinhos recebidos: ${pets} — ${reactions[pets % reactions.length]}`;
+            spawnPaw(e.clientX - 12, e.clientY - 12);
+        }
+
+        document.getElementById("pet").addEventListener("click", pet);
+        document.getElementById("cat").addEventListener("click", pet);
+    </script>
 
 </body>
 
